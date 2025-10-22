@@ -4,38 +4,34 @@ parameters:
 - name: playbook
   displayName: 'Select the Playbook name you want to run:'
   type: string
-  default: 'linux_domain_join/domain_join_site.yml'
+  default: 'test_run1'
   values:
     - 'test_run1'
     - 'test_run2'
     - 'test_run3'
     - 'test_run4'
 
-resources:
-
-  pipelines:
-  - pipeline: mgmt-ansible-domainjoin-pl
-    source: level3-management-prod-deploy
-    trigger: true
-
 jobs:
 - job: ansible_ping
   displayName: Execute Ansible playbooks
   pool: 
+    vmImage: 'ubuntu-latest'
   steps:
 
 
-  - task: AzureKeyVault@2
-    displayName: test run
+
+  - task: AzureCLI@2
+    displayName: Run Ansible playbook
     condition: |
       or(
         eq('${{ parameters.playbook }}', 'test_run1'),
-        eq('${{ parameters.playbook }}', 'test_run2'),
+        eq('${{ parameters.playbook }}', 'test_run2')
       )
-  - task: AzureKeyVault@2
-    displayName: test run 2
-    condition: |
-      or(
-       eq('${{ parameters.playbook }}', 'test_run3'),
-       eq('${{ parameters.playbook }}', 'test_run14'),
-      )
+    inputs:
+      azureSubscription: 'shared-devops-prod-001-ansible'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        ansible-inventory -v -i "localhost," --connection=local --graph
+        ansible-playbook -i "localhost," --connection=local ${{parameters.playbook}} -v
+

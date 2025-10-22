@@ -28,7 +28,7 @@ jobs:
         eq('${{ parameters.playbook }}', 'test_run2')
       )
     inputs:
-      azureSubscription: 'shared-devops-prod-001-ansible'
+      azureSubscription: 'image2'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |

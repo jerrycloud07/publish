@@ -1,19 +1,41 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  - none
+parameters:
+- name: playbook
+  displayName: 'Select the Playbook name you want to run:'
+  type: string
+  default: 'linux_domain_join/domain_join_site.yml'
+  values:
+    - 'test_run1'
+    - 'test_run2'
+    - 'test_run3'
+    - 'test_run4'
 
-pool:
-  vmImage: ubuntu-latest
+resources:
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  pipelines:
+  - pipeline: mgmt-ansible-domainjoin-pl
+    source: level3-management-prod-deploy
+    trigger: true
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+- job: ansible_ping
+  displayName: Execute Ansible playbooks
+  pool: 
+  steps:
+
+
+  - task: AzureKeyVault@2
+    displayName: test run
+    condition: |
+      or(
+        eq('${{ parameters.playbook }}', 'test_run1'),
+        eq('${{ parameters.playbook }}', 'test_run2'),
+      )
+  - task: AzureKeyVault@2
+    displayName: test run 2
+    condition: |
+      or(
+       eq('${{ parameters.playbook }}', 'test_run3'),
+       eq('${{ parameters.playbook }}', 'test_run14'),
+      )

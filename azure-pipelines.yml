@@ -4,9 +4,9 @@ parameters:
 - name: playbook
   displayName: 'Select the Playbook name you want to run:'
   type: string
-  default: 'test_run1'
+  default: 'playbooks/ping.yml'
   values:
-    - 'test_run1'
+    - 'playbooks/ping.yml'
     - 'test_run2'
     - 'test_run3'
     - 'test_run4'
@@ -24,7 +24,7 @@ jobs:
     displayName: Run Ansible playbook
     condition: |
       or(
-        eq('${{ parameters.playbook }}', 'test_run1'),
+        eq('${{ parameters.playbook }}', 'playbooks/ping.yml'),
         eq('${{ parameters.playbook }}', 'test_run2')
       )
     inputs:

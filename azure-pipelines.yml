@@ -17,6 +17,11 @@ jobs:
   pool: 
     vmImage: 'ubuntu-latest'
   steps:
+  - script: |
+      sudo apt update
+      sudo apt install -y python3-pip
+      pip3 install ansible 
+    displayName: 'Install Ansible'
 
 
 

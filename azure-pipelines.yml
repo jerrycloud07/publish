@@ -25,7 +25,22 @@ jobs:
 
 
 
-  - task: AzureCLI@2
+  # - task: AzureCLI@2
+  #   displayName: Run Ansible playbook
+  #   condition: |
+  #     or(
+  #       eq('${{ parameters.playbook }}', 'playbooks/ping.yml'),
+  #       eq('${{ parameters.playbook }}', 'test_run2')
+  #     )
+  #   inputs:
+  #     azureSubscription: 'image2'
+  #     scriptType: 'bash'
+  #     scriptLocation: 'inlineScript'
+  #     inlineScript: |
+  #       ansible-inventory -v -i "localhost," --connection=local --graph
+  #       ansible-playbook -i "localhost," --connection=local ${{parameters.playbook}} -v
+
+  - task: Ansible@0
     displayName: Run Ansible playbook
     condition: |
       or(
@@ -33,10 +48,8 @@ jobs:
         eq('${{ parameters.playbook }}', 'test_run2')
       )
     inputs:
-      azureSubscription: 'image2'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        ansible-inventory -v -i "localhost," --connection=local --graph
-        ansible-playbook -i "localhost," --connection=local ${{parameters.playbook}} -v
-
+      ansibleInterface: 'agentMachine'
+      playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/${{ parameters.playbook }}'
+      inventoriesAgentMachine: 'file'
+      inventoryFileOnAgentMachine: '$(System.DefaultWorkingDirectory)/host.yml'
+      args: '-v'

@@ -7,14 +7,13 @@ schedules:
       include:
         - automation
     always: true
-    parameters:
-      playbook: 'playbooks/ping.yml'
+
     
 parameters:
 - name: playbook
   displayName: 'Select the Playbook name you want to run:'
   type: string
-  default: 'test_run2'
+  default: 'playbooks/ping.yml'
   values:
     - 'playbooks/ping.yml'
     - 'test_run2'

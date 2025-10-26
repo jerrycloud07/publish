@@ -5,7 +5,6 @@ schedules:
     displayName: "Monthly Run: 2nd Wednesday - ping.yml"
     branches:
       include:
-        - main
         - automation
     always: true
     parameters:

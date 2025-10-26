@@ -6,6 +6,7 @@ schedules:
     branches:
       include:
         - main
+        - automation
     always: true
     parameters:
       playbook: 'playbooks/ping.yml'

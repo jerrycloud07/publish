@@ -1,10 +1,20 @@
 trigger:
   - none
+schedules:
+  - cron: "*/5 * * * *"  # Run at 6 AM UTC on the 2nd Wednesday of each month
+    displayName: "Monthly Run: 2nd Wednesday - ping.yml"
+    branches:
+      include:
+        - main
+    always: true
+    parameters:
+      playbook: 'playbooks/ping.yml'
+    
 parameters:
 - name: playbook
   displayName: 'Select the Playbook name you want to run:'
   type: string
-  default: 'playbooks/ping.yml'
+  default: 'test_run2'
   values:
     - 'playbooks/ping.yml'
     - 'test_run2'
